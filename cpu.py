@@ -134,53 +134,48 @@ class CPU:
 
             # COMMANDS
             if instrReg == HLT:
-                print("HLT")
+                # print("HLT")
                 exit()
             elif instrReg == LDI:
-                print("LDI")
+                # print("LDI")
                 self.reg[operand_a] = operand_b
-                print(f"REGISTER: {self.reg}")
             elif instrReg == PRN:
-                print("PRN")
+                # print("PRN")
                 print(f"Register: {operand_a}, Value: {self.reg[operand_a]}")
             elif instrReg == MUL:
-                print("MUL")
+                # print("MUL")
                 self.alu("MUL", operand_a, operand_b)
             elif instrReg == PUSH:
-                print("PUSH")
+                # print("PUSH")
                 self.push(operand_a)
             elif instrReg == POP:
-                print("POP")
+                # print("POP")
                 self.pop(operand_a)
             elif instrReg == CALL:
-                print("CALL")
+                # print("CALL")
                 pass
             elif instrReg == RET:
-                print("RET")
+                # print("RET")
                 pass
             elif instrReg == CMP:
-                print("CMP")
+                # print("CMP")
                 self.alu("CMP", operand_a, operand_b)
             elif instrReg == JMP:
-                print("JMP")
+                # print("JMP")
                 self.pc = self.reg[operand_a]
                 continue
             elif instrReg == JEQ:
-                print("JEQ")
+                # print("JEQ")
                 shifter = self.fl & 0b001
-                print(f"JEQ - shifter - {bin(shifter)}")
                 if shifter == 0b001:
                     self.pc = self.reg[operand_a]
                     continue
-                print(f"JEQ - not equal")
             elif instrReg == JNE:
-                print("JNE")
+                # print("JNE")
                 shifter = self.fl & 0b001
-                print(f"JNE - shifter - {bin(shifter)}")
                 if shifter == 0b000:
                     self.pc = self.reg[operand_a]
                     continue
-                print("JNE - is equal")
 
             change_pc = instrReg
             change_pc = change_pc >> 6
