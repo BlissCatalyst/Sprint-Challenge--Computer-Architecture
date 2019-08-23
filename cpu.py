@@ -11,7 +11,7 @@ POP = 0b01000110
 CALL = 0b01010000
 RET = 0b00010001
 CMP = 0b10100111
-JMP = 0b00000000
+JMP = 0b01010100
 JEQ = 0b00000000
 JNE = 0b00000000
 
@@ -151,6 +151,9 @@ class CPU:
                 pass
             elif instrReg == CMP:
                 self.alu("CMP", operand_a, operand_b)
+            elif instrReg == JMP:
+                self.pc = self.reg[operand_a]
+                continue
 
             change_pc = instrReg
             change_pc = change_pc >> 6
