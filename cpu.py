@@ -12,7 +12,7 @@ CALL = 0b01010000
 RET = 0b00010001
 CMP = 0b10100111
 JMP = 0b01010100
-JEQ = 0b00000000
+JEQ = 0b01010101
 JNE = 0b00000000
 
 if len(sys.argv) != 2:
@@ -154,6 +154,12 @@ class CPU:
             elif instrReg == JMP:
                 self.pc = self.reg[operand_a]
                 continue
+            elif instrReg == JEQ:
+                shifter = self.fl
+                shifter = shifter << 5
+                if shifter == 0b00100000:
+                    self.pc = operand_a
+                    continue
 
             change_pc = instrReg
             change_pc = change_pc >> 6
