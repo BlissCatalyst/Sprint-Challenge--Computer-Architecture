@@ -31,7 +31,7 @@ class CPU:
         self.reg[7] = 0xF4
         self.ram = [0] * 256
         self.pc = 0
-        self.fl = 0b00000000
+        self.fl = 0b000
         self.branchtable = {}
         self.branchtable[MUL] = self.alu
 
@@ -61,7 +61,7 @@ class CPU:
 
                     value = int(num, 2)
 
-                    self.ram[address] = value
+                    self.ram_write(value, address)
 
                     address += 1
 
@@ -93,13 +93,13 @@ class CPU:
             self.reg[reg_a] = self.reg[reg_a] * self.reg[reg_b]
         elif op == "CMP":
             if self.reg[reg_a] == self.reg[reg_b]:
-                self.fl = self.fl | 0b00000001
+                self.fl = self.fl | 0b001
             elif self.reg[reg_a] < self.reg[reg_b]:
-                self.fl = self.fl | 0b00000100
+                self.fl = self.fl | 0b100
             elif self.reg[reg_a] > self.reg[reg_b]:
-                self.fl = self.fl | 0b00000010
+                self.fl = self.fl | 0b010
             else:
-                self.fl = 0b0
+                self.fl = 0b000
                 print("Not Compared")
         else:
             raise Exception("Unsupported ALU operation")
@@ -167,20 +167,20 @@ class CPU:
                 continue
             elif instrReg == JEQ:
                 print("JEQ")
-                shifter = self.fl
-                shifter = shifter << 7
-                if shifter == 0b10000000:
-                    self.pc = operand_a
-                    self.fl = 0
+                shifter = self.fl & 0b001
+                print(f"JEQ - shifter - {bin(shifter)}")
+                if shifter == 0b001:
+                    self.pc = self.reg[operand_a]
                     continue
+                print(f"JEQ - not equal")
             elif instrReg == JNE:
                 print("JNE")
-                shifter = self.fl
-                shifter = shifter << 7
-                if shifter == 0b0:
-                    self.pc = operand_a
-                    self.fl = 0
+                shifter = self.fl & 0b000
+                print(f"JNE - shifter - {bin(shifter)}")
+                if shifter == 0b000:
+                    self.pc = self.reg[operand_a]
                     continue
+                print("JNE - is equal")
 
             change_pc = instrReg
             change_pc = change_pc >> 6
