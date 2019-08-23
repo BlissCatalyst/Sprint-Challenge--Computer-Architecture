@@ -98,6 +98,9 @@ class CPU:
                 self.fl = self.fl | 0b00000100
             elif self.reg[reg_a] > self.reg[reg_b]:
                 self.fl = self.fl | 0b00000010
+            else:
+                self.fl = 0b0
+                print("Not Compared")
         else:
             raise Exception("Unsupported ALU operation")
 
@@ -136,35 +139,47 @@ class CPU:
             elif instrReg == LDI:
                 print("LDI")
                 self.reg[operand_a] = operand_b
+                print(f"REGISTER: {self.reg}")
             elif instrReg == PRN:
                 print("PRN")
                 print(f"Register: {operand_a}, Value: {self.reg[operand_a]}")
             elif instrReg == MUL:
+                print("MUL")
                 self.alu("MUL", operand_a, operand_b)
             elif instrReg == PUSH:
+                print("PUSH")
                 self.push(operand_a)
             elif instrReg == POP:
+                print("POP")
                 self.pop(operand_a)
             elif instrReg == CALL:
+                print("CALL")
                 pass
             elif instrReg == RET:
+                print("RET")
                 pass
             elif instrReg == CMP:
+                print("CMP")
                 self.alu("CMP", operand_a, operand_b)
             elif instrReg == JMP:
+                print("JMP")
                 self.pc = self.reg[operand_a]
                 continue
             elif instrReg == JEQ:
+                print("JEQ")
                 shifter = self.fl
                 shifter = shifter << 7
                 if shifter == 0b10000000:
                     self.pc = operand_a
+                    self.fl = 0
                     continue
             elif instrReg == JNE:
+                print("JNE")
                 shifter = self.fl
                 shifter = shifter << 7
                 if shifter == 0b0:
                     self.pc = operand_a
+                    self.fl = 0
                     continue
 
             change_pc = instrReg
