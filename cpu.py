@@ -10,6 +10,10 @@ PUSH = 0b01000101
 POP = 0b01000110
 CALL = 0b01010000
 RET = 0b00010001
+CMP = 0b10100111
+JMP = 0b00000000
+JEQ = 0b00000000
+JNE = 0b00000000
 
 if len(sys.argv) != 2:
     print("usage: file.py <filename>", file=sys.stderr)
@@ -27,7 +31,7 @@ class CPU:
         self.reg[7] = 0xF4
         self.ram = [0] * 256
         self.pc = 0
-        self.fl = 0
+        self.fl = 0b00000000
         self.branchtable = {}
         self.branchtable[MUL] = self.alu
 
@@ -85,8 +89,15 @@ class CPU:
         if op == "ADD":
             self.reg[reg_a] += self.reg[reg_b]
         # elif op == "SUB": etc
-        if op == "MUL":
+        elif op == "MUL":
             self.reg[reg_a] = self.reg[reg_a] * self.reg[reg_b]
+        elif op == "CMP":
+            if self.reg[reg_a] == self.reg[reg_b]:
+                self.fl = self.fl | 0b00000001
+            elif self.reg[reg_a] < self.reg[reg_b]:
+                self.fl = self.fl | 0b00000100
+            elif self.reg[reg_a] > self.reg[reg_b]:
+                self.fl = self.fl | 0b00000010
         else:
             raise Exception("Unsupported ALU operation")
 
@@ -138,6 +149,8 @@ class CPU:
                 pass
             elif instrReg == RET:
                 pass
+            elif instrReg == CMP:
+                self.alu("CMP", operand_a, operand_b)
 
             change_pc = instrReg
             change_pc = change_pc >> 6
