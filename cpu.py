@@ -13,7 +13,7 @@ RET = 0b00010001
 CMP = 0b10100111
 JMP = 0b01010100
 JEQ = 0b01010101
-JNE = 0b00000000
+JNE = 0b01010110
 
 if len(sys.argv) != 2:
     print("usage: file.py <filename>", file=sys.stderr)
@@ -156,8 +156,14 @@ class CPU:
                 continue
             elif instrReg == JEQ:
                 shifter = self.fl
-                shifter = shifter << 5
-                if shifter == 0b00100000:
+                shifter = shifter << 7
+                if shifter == 0b10000000:
+                    self.pc = operand_a
+                    continue
+            elif instrReg == JNE:
+                shifter = self.fl
+                shifter = shifter << 7
+                if shifter == 0b0:
                     self.pc = operand_a
                     continue
 
