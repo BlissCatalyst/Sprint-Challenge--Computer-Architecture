@@ -175,7 +175,7 @@ class CPU:
                 print(f"JEQ - not equal")
             elif instrReg == JNE:
                 print("JNE")
-                shifter = self.fl & 0b000
+                shifter = self.fl & 0b001
                 print(f"JNE - shifter - {bin(shifter)}")
                 if shifter == 0b000:
                     self.pc = self.reg[operand_a]
